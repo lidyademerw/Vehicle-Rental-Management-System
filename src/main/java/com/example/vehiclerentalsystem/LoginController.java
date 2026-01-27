@@ -29,24 +29,29 @@ public class LoginController {
 
         if (loggedInUser != null) {
             try {
-                // If it's an Admin, open the Admin Dashboard
+                String fxmlFile = "";
+                String title = "";
+
+                // Switch based on Role
                 if (loggedInUser.getRole().equals("ADMIN")) {
-                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("admin-dashboard.fxml"));
-                    Scene scene = new Scene(fxmlLoader.load(), 600, 500);
-                    Stage stage = (Stage) usernameField.getScene().getWindow();
-                    stage.setScene(scene);
-                    stage.setTitle("Admin Dashboard");
+                    fxmlFile = "admin-dashboard.fxml";
+                    title = "Admin Dashboard";
+                } else {
+                    fxmlFile = "customer-view.fxml";
+                    title = "Customer Dashboard";
                 }
-                // We will add the Customer dashboard logic tomorrow!
-                else {
-                    errorLabel.setText("Customer login works, but dashboard coming tomorrow!");
-                }
+
+                FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
+                Scene scene = new Scene(loader.load(), 600, 550);
+                Stage stage = (Stage) usernameField.getScene().getWindow();
+                stage.setScene(scene);
+                stage.setTitle(title);
+                stage.show();
+
             } catch (Exception e) {
-                errorLabel.setText("Error loading the next screen!");
+                errorLabel.setText("Error loading screen!");
                 e.printStackTrace();
             }
-        } else {
-            errorLabel.setText("Invalid username or password!");
         }
     }
 }

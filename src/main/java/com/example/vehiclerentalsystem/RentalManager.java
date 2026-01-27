@@ -4,64 +4,71 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RentalManager {
-    // These lists hold all our data while the app is running
     private List<Vehicle> vehicles;
     private List<User> users;
+    private FileDataHandler fileHandler = new FileDataHandler();
 
     public RentalManager() {
-        this.vehicles = new ArrayList<>();
         this.users = new ArrayList<>();
+        // Try to load from the text file first
+        this.vehicles = fileHandler.loadVehicles();
 
-        // Let's add some "Default" data so the app isn't empty when we start
-        addDefaultData();
-    }
+        // If file is empty, add the 3 default cars
+        if (this.vehicles.isEmpty()) {
+            addDefaultData();
+        }
 
-    // This method puts some starter cars and users in the system
-    private void addDefaultData() {
-        // Adding an Admin and a Customer
+        // Setup users
         users.add(new Admin("admin", "123"));
         users.add(new Customer("user", "123"));
+    }
 
-        // Adding some Cars
+    private void addDefaultData() {
         vehicles.add(new Car("ABC-111", "Toyota Corolla", 50.0));
         vehicles.add(new Car("XYZ-222", "Honda Civic", 60.0));
         vehicles.add(new Car("LUX-333", "Mercedes C-Class", 120.0));
+        fileHandler.saveVehicles(vehicles); // Save these to the file
     }
 
-    // Logic: Find a user by username and password (Login)
     public User login(String username, String password) {
         for (User u : users) {
             if (u.getUsername().equals(username) && u.getPassword().equals(password)) {
-                return u; // Login success!
+                return u;
             }
         }
-        return null; // Login failed
+        return null;
     }
 
-    // Logic: Get only the cars that are NOT rented yet
-    public List<Vehicle> getAvailableVehicles() {
-        List<Vehicle> available = new ArrayList<>();
-        for (Vehicle v : vehicles) {
-            if (!v.isRented()) {
-                available.add(v);
-            }
-        }
-        return available;
+    public void addVehicle(Vehicle v) {
+        vehicles.add(v);
+        fileHandler.saveVehicles(vehicles); // SAVE TO FILE
     }
 
-    // Logic: Get ALL vehicles (for the Admin)
-    public List<Vehicle> getAllVehicles() {
-        return vehicles;
+    public void deleteVehicle(Vehicle v) {
+        vehicles.remove(v);
+        fileHandler.saveVehicles(vehicles); // SAVE TO FILE
     }
 
-    // Logic: Rent a car
     public boolean rentVehicle(String plateNumber) {
         for (Vehicle v : vehicles) {
             if (v.getPlateNumber().equals(plateNumber) && !v.isRented()) {
                 v.setRented(true);
-                return true; // Success
+                fileHandler.saveVehicles(vehicles); // SAVE TO FILE
+                return true;
             }
         }
-        return false; // Could not rent (already rented or wrong plate)
+        return false;
+    }
+
+    public List<Vehicle> getAvailableVehicles() {
+        List<Vehicle> available = new ArrayList<>();
+        for (Vehicle v : vehicles) {
+            if (!v.isRented()) available.add(v);
+        }
+        return available;
+    }
+
+    public List<Vehicle> getAllVehicles() {
+        return vehicles;
     }
 }
