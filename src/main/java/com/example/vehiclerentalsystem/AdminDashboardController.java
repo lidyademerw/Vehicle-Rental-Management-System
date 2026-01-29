@@ -64,7 +64,7 @@ public class AdminDashboardController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("login-view.fxml"));
             javafx.stage.Stage stage = (javafx.stage.Stage) vehicleTable.getScene().getWindow();
-            stage.setScene(new javafx.scene.Scene(loader.load(), 400, 400));
+            stage.setScene(new javafx.scene.Scene(loader.load(), 400, 650));
             stage.setTitle("Login");
         } catch (Exception e) {
             e.printStackTrace();

@@ -46,7 +46,7 @@ public class CustomerDashboardController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("login-view.fxml"));
             Stage stage = (Stage) availableTable.getScene().getWindow();
-            stage.setScene(new Scene(loader.load(), 400, 400));
+            stage.setScene(new Scene(loader.load(), 400, 650));
         } catch (Exception e) { e.printStackTrace(); }
     }
 }

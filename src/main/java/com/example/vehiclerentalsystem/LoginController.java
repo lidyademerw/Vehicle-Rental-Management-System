@@ -20,6 +20,7 @@ public class LoginController {
         return manager;
     }
 
+
     @FXML
     protected void onLoginButtonClick() {
         String user = usernameField.getText();
@@ -52,6 +53,7 @@ public class LoginController {
                 errorLabel.setText("Error loading screen!");
                 e.printStackTrace();
             }
+
         }
     }
 }
