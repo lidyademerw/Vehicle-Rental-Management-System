@@ -7,30 +7,50 @@ public class RentalManager {
     private List<Vehicle> vehicles;
     private List<User> users;
     private FileDataHandler fileHandler = new FileDataHandler();
+    private UserDataHandler userHandler = new UserDataHandler(); // NEW: For persisting users
 
     public RentalManager() {
-        this.users = new ArrayList<>();
-        // Try to load from the text file first
+        // 1. Load Vehicles
         this.vehicles = fileHandler.loadVehicles();
-
-        // If file is empty, add the 3 default cars
         if (this.vehicles.isEmpty()) {
             addDefaultData();
         }
 
-        // Setup users
-        users.add(new Admin("admin", "123"));
-        users.add(new Customer("user", "123"));
+        // 2. Load Users from file
+        this.users = userHandler.loadUsers();
+
+        // 3. If no users exist, setup defaults and save them
+        if (this.users.isEmpty()) {
+            users.add(new Admin("admin", "123"));
+            users.add(new Customer("user", "123"));
+            userHandler.saveUsers(users); // Save the defaults to create the file
+        }
     }
 
     private void addDefaultData() {
         vehicles.add(new Car("ABC-111", "Toyota Corolla", 50.0));
         vehicles.add(new Car("XYZ-222", "Honda Civic", 60.0));
         vehicles.add(new Car("LUX-333", "Mercedes C-Class", 120.0));
-        fileHandler.saveVehicles(vehicles); // Save these to the file
+        vehicles.add(new Motorcycle("BIKE-001", "Yamaha R1", 45.0));
+        vehicles.add(new Motorcycle("BIKE-002", "Harley Davidson", 85.0));
+        vehicles.add(new Motorcycle("BIKE-003", "Ducati Panigale", 110.0));
+        fileHandler.saveVehicles(vehicles);
     }
 
-    public User login(String username, String password) {
+    public boolean registerUser(String username, String password) {
+        for (User u : users) {
+            if (u.getUsername().equalsIgnoreCase(username)) {
+                return false;
+            }
+        }
+        users.add(new Customer(username, password));
+
+        // SAVE USERS TO FILE: This ensures the new signup isn't lost on restart
+        userHandler.saveUsers(users);
+        return true;
+    }
+
+    public User validateUser(String username, String password) {
         for (User u : users) {
             if (u.getUsername().equals(username) && u.getPassword().equals(password)) {
                 return u;
@@ -39,21 +59,39 @@ public class RentalManager {
         return null;
     }
 
+    // --- VEHICLE FILTERING METHODS ---
+
+    public List<Vehicle> getAvailableCars() {
+        List<Vehicle> cars = new ArrayList<>();
+        for (Vehicle v : getAvailableVehicles()) {
+            if (v instanceof Car) cars.add(v);
+        }
+        return cars;
+    }
+
+    public List<Vehicle> getAvailableMotorcycles() {
+        List<Vehicle> motorcycles = new ArrayList<>();
+        for (Vehicle v : getAvailableVehicles()) {
+            if (v instanceof Motorcycle) motorcycles.add(v);
+        }
+        return motorcycles;
+    }
+
     public void addVehicle(Vehicle v) {
         vehicles.add(v);
-        fileHandler.saveVehicles(vehicles); // SAVE TO FILE
+        fileHandler.saveVehicles(vehicles);
     }
 
     public void deleteVehicle(Vehicle v) {
         vehicles.remove(v);
-        fileHandler.saveVehicles(vehicles); // SAVE TO FILE
+        fileHandler.saveVehicles(vehicles);
     }
 
     public boolean rentVehicle(String plateNumber) {
         for (Vehicle v : vehicles) {
             if (v.getPlateNumber().equals(plateNumber) && !v.isRented()) {
                 v.setRented(true);
-                fileHandler.saveVehicles(vehicles); // SAVE TO FILE
+                fileHandler.saveVehicles(vehicles);
                 return true;
             }
         }
