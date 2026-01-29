@@ -14,7 +14,7 @@ public class CustomerDashboardController {
     @FXML private TableColumn<Vehicle, Double> priceCol;
     @FXML private Label statusLabel;
 
-    private RentalManager manager = LoginController.getManager();
+    private RentalManager manager = LoginController.getManager(); // save admin and user data in same file
 
     @FXML
     public void initialize() {
@@ -46,7 +46,7 @@ public class CustomerDashboardController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("login-view.fxml"));
             Stage stage = (Stage) availableTable.getScene().getWindow();
-            stage.setScene(new Scene(loader.load(), 400, 650));
+            stage.setScene(new Scene(loader.load(), 400, 600));
         } catch (Exception e) { e.printStackTrace(); }
     }
 }
