@@ -1,6 +1,6 @@
 package com.example.vehiclerentalsystem;
 
-// "extends" means Car gets everything from Vehicle (Inheritance)
+// Car gets everything from Vehicle (Inheritance)
 public class Car extends Vehicle {
 
     public Car(String plateNumber, String model, double dailyPrice) {
