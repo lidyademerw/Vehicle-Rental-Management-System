@@ -10,7 +10,6 @@ public class UserDataHandler {
     public void saveUsers(List<User> users) {
         try (PrintWriter writer = new PrintWriter(new FileWriter(FILE_NAME))) {
             for (User u : users) {
-                // Format: ROLE,Username,Password
                 String role = (u instanceof Admin) ? "ADMIN" : "CUSTOMER";
                 writer.println(role + "," + u.getUsername() + "," + u.getPassword());
             }

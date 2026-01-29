@@ -37,19 +37,16 @@ public class AdminDashboardController {
         vehicleTable.setItems(FXCollections.observableArrayList(manager.getAllVehicles()));
     }
 
-    // Existing button updated to specifically call for a CAR
     @FXML
     protected void onAddButtonClick() {
         handleVehicleAddition("CAR");
     }
 
-    // NEW Method for the Motorcycle button
     @FXML
     protected void onAddMotorcycleButtonClick() {
         handleVehicleAddition("MOTORCYCLE");
     }
 
-    // Helper method to reduce code duplication
     private void handleVehicleAddition(String type) {
         try {
             String plate = newPlateField.getText();

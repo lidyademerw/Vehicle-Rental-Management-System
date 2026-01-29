@@ -59,8 +59,6 @@ public class RentalManager {
         return null;
     }
 
-    // --- VEHICLE FILTERING METHODS ---
-
     public List<Vehicle> getAvailableCars() {
         List<Vehicle> cars = new ArrayList<>();
         for (Vehicle v : getAvailableVehicles()) {

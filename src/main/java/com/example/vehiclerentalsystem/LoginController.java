@@ -25,7 +25,6 @@ public class LoginController {
         String user = usernameField.getText();
         String pass = passwordField.getText();
 
-        // Updated to use the validateUser method we added to RentalManager
         User loggedInUser = manager.validateUser(user, pass);
 
         if (loggedInUser != null) {
@@ -69,7 +68,7 @@ public class LoginController {
             return;
         }
 
-        // Logic to register the new customer
+        // register the new customer
         boolean success = manager.registerUser(user, pass);
 
         if (success) {

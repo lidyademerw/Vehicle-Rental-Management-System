@@ -5,7 +5,7 @@ public class VehicleFactory {
         if (type.equalsIgnoreCase("CAR")) {
             return new Car(plate, model, price);
         }
-        // ADD MOTORCYCLE
+        // MOTORCYCLE
         else if (type.equalsIgnoreCase("MOTORCYCLE")) {
             return new Motorcycle(plate, model, price);
         }
