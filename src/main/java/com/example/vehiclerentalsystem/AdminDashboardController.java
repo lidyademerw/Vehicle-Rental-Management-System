@@ -41,7 +41,8 @@ public class AdminDashboardController {
             String model = newModelField.getText();
             double price = Double.parseDouble(newPriceField.getText());
 
-            manager.addVehicle(new Car(plate, model, price));
+            Vehicle newVehicle = VehicleFactory.createVehicle("CAR", plate, model, price);
+            manager.addVehicle(newVehicle);
             refreshTable();
             newPlateField.clear(); newModelField.clear(); newPriceField.clear();
         } catch (Exception e) {
@@ -62,8 +63,12 @@ public class AdminDashboardController {
     protected void onLogoutButtonClick() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("login-view.fxml"));
-            Stage stage = (Stage) vehicleTable.getScene().getWindow();
-            stage.setScene(new Scene(loader.load(), 400, 400));
-        } catch (Exception e) { e.printStackTrace(); }
+            javafx.stage.Stage stage = (javafx.stage.Stage) vehicleTable.getScene().getWindow();
+            stage.setScene(new javafx.scene.Scene(loader.load(), 400, 400));
+            stage.setTitle("Login");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
+
 }
