@@ -1,5 +1,6 @@
 package com.example.vehiclerentalsystem;
 
+// Represents a car vehicle in the rental system. 
 // Car gets everything from Vehicle (Inheritance)
 public class Car extends Vehicle {
 
