@@ -1,0 +1,6 @@
+CAR,ABC-111,Toyota Corolla,50.0,false,N/A,N/A,N/A,N/A
+CAR,XYZ-222,Honda Civic,60.0,false,N/A,N/A,N/A,N/A
+CAR,LUX-333,Mercedes C-Class,120.0,false,N/A,N/A,N/A,N/A
+MOTORCYCLE,BIKE-001,Yamaha R1,45.0,false,N/A,N/A,N/A,N/A
+MOTORCYCLE,BIKE-002,Harley Davidson,85.0,false,N/A,N/A,N/A,N/A
+MOTORCYCLE,BIKE-003,Ducati Panigale,110.0,false,N/A,N/A,N/A,N/A
