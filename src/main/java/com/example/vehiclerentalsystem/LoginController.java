@@ -12,7 +12,8 @@ import javafx.stage.Stage;
 public class LoginController {
     @FXML private TextField usernameField;
     @FXML private PasswordField passwordField;
-    @FXML private Label errorLabel; // You can still use this or the Alert popups below
+    @FXML private Label errorLabel;
+    @FXML private TextField contactField;
 
     private static RentalManager manager = new RentalManager();
 
@@ -29,31 +30,46 @@ public class LoginController {
 
         if (loggedInUser != null) {
             try {
-                String fxmlFile = "";
-                String title = "";
+                String fxmlFile;
+                String title;
+                double width;
+                double height;
 
+                // Set screen size and file based on role
                 if (loggedInUser.getRole().equals("ADMIN")) {
                     fxmlFile = "admin-dashboard.fxml";
                     title = "Admin Dashboard";
+                    width = 950; // Extra width for the new renter columns
+                    height = 600;
                 } else {
                     fxmlFile = "customer-view.fxml";
                     title = "Customer Dashboard";
+                    width = 600;
+                    height = 650;
                 }
 
                 FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
-                Scene scene = new Scene(loader.load(), 600, 650); // Increased height for the split tables
+                Scene scene = new Scene(loader.load(), width, height);
+
+                // Only set user if the controller is for a Customer
+                if (loggedInUser.getRole().equals("CUSTOMER")) {
+                    CustomerDashboardController controller = loader.getController();
+                    controller.setUser(loggedInUser);
+                }
+
                 Stage stage = (Stage) usernameField.getScene().getWindow();
                 stage.setScene(scene);
                 stage.setTitle(title);
+                stage.centerOnScreen();
                 stage.show();
 
             } catch (Exception e) {
-                errorLabel.setText("Error loading screen!");
-                e.printStackTrace();
+                // This label is what you see in your image
+                errorLabel.setText("Error loading screen! Check console.");
+                e.printStackTrace(); // This prints the REAL error in your IntelliJ/IDE console
             }
         } else {
-            // UPDATED: Show feedback if username or password is wrong
-            showErrorMessage("Invalid Credentials", "The username or password you entered is incorrect.");
+            showErrorMessage("Invalid Credentials", "Incorrect username or password.");
         }
     }
 
@@ -61,23 +77,26 @@ public class LoginController {
     protected void onSignupButtonClick() {
         String user = usernameField.getText();
         String pass = passwordField.getText();
+        String contactText = contactField.getText();
 
-        // Validation: Fields cannot be empty
-        if (user.isEmpty() || pass.isEmpty()) {
-            showErrorMessage("Registration Error", "Please enter both a username and password.");
+        if (user.isEmpty() || pass.isEmpty() || contactText.isEmpty()) {
+            showErrorMessage("Registration Error", "Please fill in all fields.");
             return;
         }
 
-        // register the new customer
-        boolean success = manager.registerUser(user, pass);
+        if (!contactText.matches("\\d+")) {
+            showErrorMessage("Input Error", "Contact info must contain only numbers.");
+            return;
+        }
 
+        boolean success = manager.registerUser(user, pass, contactText);
         if (success) {
-            showInfoMessage("Account Created", "Registration successful! You can now log in with your new account.");
-            // Clear fields after signup
+            showInfoMessage("Account Created", "Registration successful! You can now Sign In.");
             usernameField.clear();
             passwordField.clear();
+            contactField.clear();
         } else {
-            showErrorMessage("Registration Error", "This username is already taken. Please try another.");
+            showErrorMessage("Registration Error", "Username already taken.");
         }
     }
 

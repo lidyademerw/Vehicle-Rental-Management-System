@@ -1,3 +1,0 @@
-ADMIN,admin,123
-CUSTOMER,user,123
-CUSTOMER,kenean,kenean

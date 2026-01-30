@@ -7,22 +7,22 @@ public class RentalManager {
     private List<Vehicle> vehicles;
     private List<User> users;
     private FileDataHandler fileHandler = new FileDataHandler();
-    private UserDataHandler userHandler = new UserDataHandler(); // NEW: For persisting users
+    private UserDataHandler userHandler = new UserDataHandler(); // For persisting users
 
     public RentalManager() {
-        // 1. Load Vehicles
+        // Load Vehicles
         this.vehicles = fileHandler.loadVehicles();
         if (this.vehicles.isEmpty()) {
             addDefaultData();
         }
 
-        // 2. Load Users from file
+        // Load Users from file
         this.users = userHandler.loadUsers();
 
-        // 3. If no users exist, setup defaults and save them
+        // If no users exist, setup defaults and save them
         if (this.users.isEmpty()) {
             users.add(new Admin("admin", "123"));
-            users.add(new Customer("user", "123"));
+            users.add(new Customer("user", "123","0987654321"));
             userHandler.saveUsers(users); // Save the defaults to create the file
         }
     }
@@ -37,15 +37,15 @@ public class RentalManager {
         fileHandler.saveVehicles(vehicles);
     }
 
-    public boolean registerUser(String username, String password) {
+    public boolean registerUser(String username, String password,String contactInfo) {
         for (User u : users) {
             if (u.getUsername().equalsIgnoreCase(username)) {
                 return false;
             }
         }
-        users.add(new Customer(username, password));
+        users.add(new Customer(username, password, contactInfo));
 
-        // SAVE USERS TO FILE: This ensures the new signup isn't lost on restart
+        // This ensures the new signup isn't lost on restart
         userHandler.saveUsers(users);
         return true;
     }
@@ -85,17 +85,26 @@ public class RentalManager {
         fileHandler.saveVehicles(vehicles);
     }
 
-    public boolean rentVehicle(String plateNumber) {
+    public boolean rentVehicle(String plateNumber, String customerName, String contact, String start, String end) {
         for (Vehicle v : vehicles) {
             if (v.getPlateNumber().equals(plateNumber) && !v.isRented()) {
-                v.setRented(true);
+                v.setRentalDetails(customerName, contact, start, end);
                 fileHandler.saveVehicles(vehicles);
                 return true;
             }
         }
         return false;
     }
-
+    public boolean returnVehicle(String plateNumber) {
+        for (Vehicle v : vehicles) {
+            if (v.getPlateNumber().equals(plateNumber) && v.isRented()) {
+                v.setRented(false); // This triggers the reset of renter info to "N/A"
+                fileHandler.saveVehicles(vehicles);
+                return true;
+            }
+        }
+        return false;
+    }
     public List<Vehicle> getAvailableVehicles() {
         List<Vehicle> available = new ArrayList<>();
         for (Vehicle v : vehicles) {

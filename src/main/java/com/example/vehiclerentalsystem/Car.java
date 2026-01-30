@@ -9,7 +9,6 @@ public class Car extends Vehicle {
 
     @Override
     public double calculateTotalCost(int days) {
-        // Math: Price per day * number of days
         return getDailyPrice() * days;
     }
 }
