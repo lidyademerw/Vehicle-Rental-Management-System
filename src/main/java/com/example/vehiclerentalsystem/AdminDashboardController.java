@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.fxml.FXMLLoader;
 
+// Controller for the Admin Dashboard UI.
 public class AdminDashboardController {
 
     @FXML private TableView<Vehicle> vehicleTable;
@@ -39,7 +40,7 @@ public class AdminDashboardController {
 
         refreshTable();
     }
-
+// Reloads vechile data from the manager into the table view
     private void refreshTable() {
         vehicleTable.setItems(FXCollections.observableArrayList(manager.getAllVehicles()));
     }
