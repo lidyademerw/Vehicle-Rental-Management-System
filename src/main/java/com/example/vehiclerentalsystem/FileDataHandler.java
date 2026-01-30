@@ -13,9 +13,7 @@ public class FileDataHandler {
             for (Vehicle v : vehicles) {
                 // Determine the type using instanceof
                 String type = (v instanceof Car) ? "CAR" : "MOTORCYCLE";
-
-                // NEW Save format: Type,Plate,Model,Price,IsRented
-                writer.println(type + "," + v.getPlateNumber() + "," + v.getModel() + "," + v.getDailyPrice() + "," + v.isRented());
+                writer.println(type + "," + v.getPlateNumber() + "," + v.getModel() + "," + v.getDailyPrice() + "," + v.isRented()+ "," + v.getRenterName() + "," + v.getRenterContact() + "," + v.getStartDate() + "," + v.getEndDate());
             }
             System.out.println("Data saved successfully to " + FILE_NAME);
         } catch (IOException e) {
@@ -35,18 +33,26 @@ public class FileDataHandler {
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
 
-                // Now we read the type from the FIRST column (parts[0])
                 String type = parts[0];
                 String plate = parts[1];
                 String model = parts[2];
                 double price = Double.parseDouble(parts[3]);
                 boolean isRented = Boolean.parseBoolean(parts[4]);
+                String rName = parts[5];
+                String rContact = parts[6];
+                String start = parts[7];
+                String end = parts[8];
 
                 // USE THE FACTORY with the actual type from the file
                 Vehicle v = VehicleFactory.createVehicle(type, plate, model, price);
 
                 if (v != null) {
-                    v.setRented(isRented);
+                    // Set the status and the details back into the object
+                    if (isRented) {
+                        v.setRentalDetails(rName, rContact, start, end);
+                    } else {
+                        v.setRented(false); // Ensures "N/A" for available cars
+                    }
                     loadedVehicles.add(v);
                 }
             }

@@ -2,9 +2,8 @@ package com.example.vehiclerentalsystem;
 
 public class Customer extends User {
 
-    public Customer(String username, String password) {
-        super(username, password, "CUSTOMER");
+    public Customer(String username, String password, String contactInfo) {
+        super(username, password, "CUSTOMER", contactInfo);
     }
 
-    // Customers will eventually have a list of cars they rented
 }

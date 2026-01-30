@@ -1,7 +1,6 @@
 package com.example.vehiclerentalsystem;
 
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -9,6 +8,7 @@ import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.fxml.FXMLLoader;
 
+// Controller for the Admin Dashboard UI.
 public class AdminDashboardController {
 
     @FXML private TableView<Vehicle> vehicleTable;
@@ -16,6 +16,10 @@ public class AdminDashboardController {
     @FXML private TableColumn<Vehicle, String> modelColumn;
     @FXML private TableColumn<Vehicle, Double> priceColumn;
     @FXML private TableColumn<Vehicle, Boolean> statusColumn;
+    @FXML private TableColumn<Vehicle, String> renterNameColumn;
+    @FXML private TableColumn<Vehicle, String> contactColumn;
+    @FXML private TableColumn<Vehicle, String> startColumn;
+    @FXML private TableColumn<Vehicle, String> endColumn;
 
     @FXML private TextField newPlateField;
     @FXML private TextField newModelField;
@@ -29,10 +33,14 @@ public class AdminDashboardController {
         modelColumn.setCellValueFactory(new PropertyValueFactory<>("model"));
         priceColumn.setCellValueFactory(new PropertyValueFactory<>("dailyPrice"));
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("rented"));
+        renterNameColumn.setCellValueFactory(new PropertyValueFactory<>("renterName"));
+        contactColumn.setCellValueFactory(new PropertyValueFactory<>("renterContact"));
+        startColumn.setCellValueFactory(new PropertyValueFactory<>("startDate"));
+        endColumn.setCellValueFactory(new PropertyValueFactory<>("endDate"));
 
         refreshTable();
     }
-
+// Reloads vechile data from the manager into the table view
     private void refreshTable() {
         vehicleTable.setItems(FXCollections.observableArrayList(manager.getAllVehicles()));
     }
@@ -53,26 +61,33 @@ public class AdminDashboardController {
             String model = newModelField.getText();
             double price = Double.parseDouble(newPriceField.getText());
 
-            // FACTORY PATTERN: Now dynamically choosing CAR or MOTORCYCLE
             Vehicle newVehicle = VehicleFactory.createVehicle(type, plate, model, price);
 
             if (newVehicle != null) {
                 manager.addVehicle(newVehicle);
                 refreshTable();
-
-                newPlateField.clear();
-                newModelField.clear();
-                newPriceField.clear();
+                clearFields();
             }
         } catch (Exception e) {
-            showError("Please enter a valid plate, model, and price number!");
+            showError("Please enter valid vehicle details!");
         }
     }
 
-    private void showError(String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setContentText(message);
-        alert.showAndWait();
+    // process a return
+    @FXML
+    protected void onReturnButtonClick() {
+        Vehicle selected = vehicleTable.getSelectionModel().getSelectedItem();
+        if (selected != null) {
+            if (selected.isRented()) {
+                manager.returnVehicle(selected.getPlateNumber());
+                vehicleTable.refresh();
+                refreshTable();
+            } else {
+                showError("This vehicle is already available!");
+            }
+        } else {
+            showError("Please select a rented vehicle to return.");
+        }
     }
 
     @FXML
@@ -82,6 +97,18 @@ public class AdminDashboardController {
             manager.deleteVehicle(selected);
             refreshTable();
         }
+    }
+
+    private void clearFields() {
+        newPlateField.clear();
+        newModelField.clear();
+        newPriceField.clear();
+    }
+
+    private void showError(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
     @FXML

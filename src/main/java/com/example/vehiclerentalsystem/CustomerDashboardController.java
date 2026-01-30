@@ -2,11 +2,13 @@ package com.example.vehiclerentalsystem;
 
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import javafx.scene.Scene;
-import javafx.fxml.FXMLLoader;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 
 public class CustomerDashboardController {
@@ -19,8 +21,11 @@ public class CustomerDashboardController {
     @FXML private TableColumn<Vehicle, Double> motoPriceCol;
 
     @FXML private Label statusLabel;
+    @FXML private DatePicker startDatePicker;
+    @FXML private DatePicker endDatePicker;
 
     private RentalManager manager = LoginController.getManager();
+    private User currentUser;
 
     @FXML
     public void initialize() {
@@ -40,53 +45,63 @@ public class CustomerDashboardController {
 
     @FXML
     protected void onRentButtonClick() {
-        // 1. Identify which vehicle is selected
         Vehicle selected = carTable.getSelectionModel().getSelectedItem();
         if (selected == null) {
             selected = motorcycleTable.getSelectionModel().getSelectedItem();
         }
 
-        if (selected != null) {
-            // 2. Ask user for rental duration
-            TextInputDialog dialog = new TextInputDialog("1");
-            dialog.setTitle("Rental Duration");
-            dialog.setHeaderText("Renting: " + selected.getModel());
-            dialog.setContentText("Please enter the number of days:");
+        if (selected == null) {
+            statusLabel.setText("Error: Please select a vehicle first.");
+            return;
+        }
 
-            Optional<String> result = dialog.showAndWait();
+        LocalDate start = startDatePicker.getValue();
+        LocalDate end = endDatePicker.getValue();
 
-            if (result.isPresent()) {
-                try {
-                    int days = Integer.parseInt(result.get());
+        if (start == null || end == null) {
+            statusLabel.setText("Error: Please select both start and end dates.");
+            return;
+        }
 
-                    if (days <= 0) {
-                        statusLabel.setText("Error: Days must be at least 1.");
-                        return;
-                    }
+        if (!end.isAfter(start)) {
+            statusLabel.setText("Error: End date must be after start date.");
+            return;
+        }
 
-                    // 3. Calculate total cost using the method in your Vehicle class
-                    double totalCost = selected.calculateTotalCost(days);
+        long days = ChronoUnit.DAYS.between(start, end);
+        double totalCost = selected.calculateTotalCost((int) days);
 
-                    // 4. Show confirmation alert with the calculated cost
-                    Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
-                    confirmAlert.setTitle("Confirm Rental");
-                    confirmAlert.setHeaderText("Total Cost: $" + String.format("%.2f", totalCost));
-                    confirmAlert.setContentText("Are you sure you want to rent this " +
-                            selected.getClass().getSimpleName() + " for " + days + " days?");
+        Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmAlert.setTitle("Confirm Rental");
+        confirmAlert.setHeaderText("Rental Summary: " + selected.getModel());
+        confirmAlert.setContentText("Duration: " + days + " days\nTotal Cost: $" + String.format("%.2f", totalCost));
 
-                    Optional<ButtonType> action = confirmAlert.showAndWait();
+        Optional<ButtonType> action = confirmAlert.showAndWait();
 
-                    if (action.isPresent() && action.get() == ButtonType.OK) {
-                        manager.rentVehicle(selected.getPlateNumber());
-                        statusLabel.setText("Success! Paid $" + String.format("%.2f", totalCost) + " for " + selected.getModel());
-                        refreshTables();
-                    }
-                } catch (NumberFormatException e) {
-                    statusLabel.setText("Error: Please enter a valid whole number for days.");
-                }
+        if (action.isPresent() && action.get() == ButtonType.OK) {
+            // Ensure currentUser isn't null before calling methods on it
+            if (currentUser == null) {
+                statusLabel.setText("Error: User session expired. Please log in again.");
+                return;
             }
-        } else {
-            statusLabel.setText("Error: Please select a vehicle from one of the tables first.");
+
+            String customerName = currentUser.getUsername();
+            String contact = "N/A";
+            if (currentUser instanceof Customer) {
+                contact = ((Customer) currentUser).getContactInfo();
+            }
+
+            // Call manager with all 5 arguments
+            boolean success = manager.rentVehicle(selected.getPlateNumber(), customerName, contact, start.toString(), end.toString());
+
+            if (success) {
+                statusLabel.setText("Success! Rented until " + end);
+                // 3. THIS IS THE LINE THAT REMOVES THE CAR
+                // refreshTables calls getAvailableCars(), which filters out isRented=true
+                refreshTables();
+            } else {
+                statusLabel.setText("Error: Vehicle is no longer available.");
+            }
         }
     }
 
@@ -95,7 +110,12 @@ public class CustomerDashboardController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("login-view.fxml"));
             Stage stage = (Stage) carTable.getScene().getWindow();
-            stage.setScene(new Scene(loader.load(), 400, 600));
+            stage.setScene(new Scene(loader.load(), 400, 650)); // Adjusted for your new login height
+            stage.setTitle("Login");
         } catch (Exception e) { e.printStackTrace(); }
+    }
+
+    public void setUser(User user) {
+        this.currentUser = user;
     }
 }

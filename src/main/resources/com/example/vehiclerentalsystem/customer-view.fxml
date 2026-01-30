@@ -2,9 +2,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="650.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.vehiclerentalsystem.CustomerDashboardController">
+<AnchorPane prefHeight="500.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.vehiclerentalsystem.CustomerDashboardController">
     <children>
-        <VBox alignment="CENTER" layoutX="50.0" layoutY="20.0" spacing="10.0" prefWidth="500.0">
+        <VBox alignment="CENTER" layoutX="50.0" layoutY="20.0" spacing="15.0" prefWidth="500.0">
             <children>
                 <Label style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Customer Portal - Available Vehicles" />
 
@@ -24,12 +24,31 @@
                     </columns>
                 </TableView>
 
+                <VBox spacing="10.0" alignment="CENTER" style="-fx-background-color: #f4f4f4; -fx-padding: 10; -fx-background-radius: 5;">
+                    <children>
+                        <Label text="Select Rental Period" style="-fx-font-weight: bold;" />
+                        <HBox alignment="CENTER" spacing="15.0">
+                            <children>
+                                <VBox spacing="2.0">
+                                    <Label text="Start Date:" style="-fx-font-size: 11px;" />
+                                    <DatePicker fx:id="startDatePicker" prefWidth="150.0" promptText="Pick start date" />
+                                </VBox>
+                                <VBox spacing="2.0">
+                                    <Label text="End Date:" style="-fx-font-size: 11px;" />
+                                    <DatePicker fx:id="endDatePicker" prefWidth="150.0" promptText="Pick end date" />
+                                </VBox>
+                            </children>
+                        </HBox>
+                    </children>
+                </VBox>
+
                 <HBox alignment="CENTER" spacing="20.0">
                     <children>
-                        <Button onAction="#onRentButtonClick" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold;" text="RENT SELECTED VEHICLE" />
-                        <Button onAction="#onLogoutButtonClick" text="Logout" />
+                        <Button onAction="#onRentButtonClick" prefHeight="40.0" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;" text="RENT SELECTED VEHICLE" />
+                        <Button onAction="#onLogoutButtonClick" prefHeight="40.0" text="Logout" style="-fx-cursor: hand;" />
                     </children>
                 </HBox>
+
                 <Label fx:id="statusLabel" style="-fx-text-fill: green; -fx-font-weight: bold;" />
             </children>
         </VBox>

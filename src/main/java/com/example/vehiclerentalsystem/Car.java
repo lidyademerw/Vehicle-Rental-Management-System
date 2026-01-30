@@ -1,5 +1,6 @@
 package com.example.vehiclerentalsystem;
 
+// Represents a car vehicle in the rental system. 
 // Car gets everything from Vehicle (Inheritance)
 public class Car extends Vehicle {
 
@@ -9,7 +10,6 @@ public class Car extends Vehicle {
 
     @Override
     public double calculateTotalCost(int days) {
-        // Math: Price per day * number of days
         return getDailyPrice() * days;
     }
 }

@@ -11,7 +11,7 @@ public class UserDataHandler {
         try (PrintWriter writer = new PrintWriter(new FileWriter(FILE_NAME))) {
             for (User u : users) {
                 String role = (u instanceof Admin) ? "ADMIN" : "CUSTOMER";
-                writer.println(role + "," + u.getUsername() + "," + u.getPassword());
+                writer.println(role + "," + u.getUsername() + "," + u.getPassword() + "," + u.getContactInfo());
             }
         } catch (IOException e) {
             System.out.println("Error saving users: " + e.getMessage());
@@ -31,11 +31,12 @@ public class UserDataHandler {
                 String role = parts[0];
                 String username = parts[1];
                 String password = parts[2];
+                String contactInfo = parts[3];
 
                 if (role.equals("ADMIN")) {
                     loadedUsers.add(new Admin(username, password));
                 } else {
-                    loadedUsers.add(new Customer(username, password));
+                    loadedUsers.add(new Customer(username, password, contactInfo));
                 }
             }
         } catch (IOException e) {
