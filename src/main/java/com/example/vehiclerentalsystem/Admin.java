@@ -7,6 +7,12 @@ public class Admin extends User {
         // "ADMIN" is passed automatically to the parent constructor
         super(username, password, "ADMIN");
     }
+    public void addCar (Car car) {
+    // Logic to add car to system
+    }
+    public void deleteCar(String carId) {
+        // Logic to delete car from system
+    }
 
     // Later we will add methods here to "Add Car" or "Delete Car"
 }
