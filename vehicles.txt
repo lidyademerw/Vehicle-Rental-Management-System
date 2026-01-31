@@ -1,6 +1,5 @@
-CAR,ABC-111,Toyota Corolla,50.0,false,N/A,N/A,N/A,N/A
-CAR,XYZ-222,Honda Civic,60.0,false,N/A,N/A,N/A,N/A
-CAR,LUX-333,Mercedes C-Class,120.0,false,N/A,N/A,N/A,N/A
-MOTORCYCLE,BIKE-001,Yamaha R1,45.0,false,N/A,N/A,N/A,N/A
-MOTORCYCLE,BIKE-002,Harley Davidson,85.0,false,N/A,N/A,N/A,N/A
-MOTORCYCLE,BIKE-003,Ducati Panigale,110.0,false,N/A,N/A,N/A,N/A
+CAR,ABC-111,Toyota Corolla,50.0,true,user,0987654321,2026-01-21,2026-02-07
+CAR,LUX-333,Mercedes C-Class,120.0,true,user,12345,2026-01-15,2026-02-07
+MOTORCYCLE,BIKE-001,Yamaha R1,45.0,true,user,0987654321,2026-01-28,2026-01-31
+MOTORCYCLE,BIKE-002,Harley Davidson,85.0,true,user,1234,2026-01-21,2026-01-29
+MOTORCYCLE,BIKE-003,Ducati Panigale,110.0,true,user,0987654321,2026-01-30,2026-02-07

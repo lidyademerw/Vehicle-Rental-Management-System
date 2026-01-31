@@ -19,4 +19,7 @@ public abstract class User {
     public String getPassword() { return password; }
     public String getRole() { return role; }
     public String getContactInfo() { return contactInfo; }
+    public void setContactInfo(String contactInfo) {
+        this.contactInfo = contactInfo;
+    }
 }

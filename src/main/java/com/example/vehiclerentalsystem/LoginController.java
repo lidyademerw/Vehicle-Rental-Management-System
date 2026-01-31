@@ -20,38 +20,41 @@ public class LoginController {
     public static RentalManager getManager() {
         return manager;
     }
-
     @FXML
     protected void onLoginButtonClick() {
         String user = usernameField.getText();
         String pass = passwordField.getText();
 
+        // NEW: Get the text from the contact box (e.g., "999")
+        String contact = contactField.getText();
+        if (user.isEmpty() || pass.isEmpty() || contact.isEmpty()) {
+            errorLabel.setText("Error: All fields (including Contact) are required!");
+            return; // This "Return" is the secret—it prevents login from continuing
+        }
         User loggedInUser = manager.validateUser(user, pass);
-
         if (loggedInUser != null) {
+            loggedInUser.setContactInfo(contact);
             try {
                 String fxmlFile;
                 String title;
                 double width;
                 double height;
 
-                // Set screen size and file based on role
                 if (loggedInUser.getRole().equals("ADMIN")) {
                     fxmlFile = "admin-dashboard.fxml";
                     title = "Admin Dashboard";
-                    width = 950; // Extra width for the new renter columns
-                    height = 600;
+                    width = 950;
+                    height = 650;
                 } else {
                     fxmlFile = "customer-view.fxml";
                     title = "Customer Dashboard";
-                    width = 600;
-                    height = 650;
+                    width = 750; // Increased width for better fit
+                    height = 850; // Increased height for date pickers
                 }
 
                 FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
                 Scene scene = new Scene(loader.load(), width, height);
 
-                // Only set user if the controller is for a Customer
                 if (loggedInUser.getRole().equals("CUSTOMER")) {
                     CustomerDashboardController controller = loader.getController();
                     controller.setUser(loggedInUser);
@@ -64,14 +67,16 @@ public class LoginController {
                 stage.show();
 
             } catch (Exception e) {
-                // This label is what you see in your image
-                errorLabel.setText("Error loading screen! Check console.");
-                e.printStackTrace(); // This prints the REAL error in your IntelliJ/IDE console
+                errorLabel.setText("Error loading screen!");
+                e.printStackTrace();
             }
         } else {
-            showErrorMessage("Invalid Credentials", "Incorrect username or password.");
+
+            errorLabel.setText("Invalid username or password.");
         }
     }
+
+
 
     @FXML
     protected void onSignupButtonClick() {
