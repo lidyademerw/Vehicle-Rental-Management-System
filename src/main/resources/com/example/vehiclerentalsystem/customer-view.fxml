@@ -4,12 +4,12 @@
 
 <AnchorPane prefHeight="500.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.vehiclerentalsystem.CustomerDashboardController">
     <children>
-        <VBox alignment="CENTER" layoutX="50.0" layoutY="20.0" spacing="15.0" prefWidth="500.0">
+        <VBox alignment="TOP_CENTER" layoutX="50.0" layoutY="20.0" spacing="8.0" prefWidth="500.0">
             <children>
                 <Label style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Customer Portal - Available Vehicles" />
 
                 <Label text="Available Cars" style="-fx-font-size: 14px; -fx-font-weight: bold;" />
-                <TableView fx:id="carTable" prefHeight="180.0" prefWidth="500.0">
+                <TableView fx:id="carTable" prefHeight="200.0" prefWidth="500.0">
                     <columns>
                         <TableColumn fx:id="carModelCol" prefWidth="250.0" text="Vehicle Model" />
                         <TableColumn fx:id="carPriceCol" prefWidth="250.0" text="Price Per Day ($)" />
@@ -17,7 +17,7 @@
                 </TableView>
 
                 <Label text="Available Motorcycles" style="-fx-font-size: 14px; -fx-font-weight: bold;" />
-                <TableView fx:id="motorcycleTable" prefHeight="180.0" prefWidth="500.0">
+                <TableView fx:id="motorcycleTable" prefHeight="200.0" prefWidth="500.0">
                     <columns>
                         <TableColumn fx:id="motoModelCol" prefWidth="250.0" text="Vehicle Model" />
                         <TableColumn fx:id="motoPriceCol" prefWidth="250.0" text="Price Per Day ($)" />

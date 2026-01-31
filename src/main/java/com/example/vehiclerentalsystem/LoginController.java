@@ -24,16 +24,32 @@ public class LoginController {
     protected void onLoginButtonClick() {
         String user = usernameField.getText();
         String pass = passwordField.getText();
-
-        // NEW: Get the text from the contact box (e.g., "999")
         String contact = contactField.getText();
-        if (user.isEmpty() || pass.isEmpty() || contact.isEmpty()) {
-            errorLabel.setText("Error: All fields (including Contact) are required!");
-            return; // This "Return" is the secret—it prevents login from continuing
+
+        // 1. Basic check for EVERYONE: Username and Password cannot be empty
+        if (user.isEmpty() || pass.isEmpty()) {
+            errorLabel.setText("Error: Username and Password are required!");
+            return;
         }
+
+        // 2. Validate the user credentials first
         User loggedInUser = manager.validateUser(user, pass);
+
         if (loggedInUser != null) {
-            loggedInUser.setContactInfo(contact);
+
+            // 3. THE FIX: Check contact info ONLY IF the user is a CUSTOMER
+            if (loggedInUser.getRole().equals("CUSTOMER")) {
+                if (contact.isEmpty()) {
+                    errorLabel.setText("Error: Contact number is required for Customers!");
+                    return; // Stop here if a customer didn't type their number
+                }
+                // If they did type it, save it to their profile
+                loggedInUser.setContactInfo(contact);
+            }
+
+            // 4. If we reach here, it means:
+            // - It's an Admin (who doesn't need a contact number)
+            // - OR it's a Customer who successfully provided a number.
             try {
                 String fxmlFile;
                 String title;
@@ -48,8 +64,8 @@ public class LoginController {
                 } else {
                     fxmlFile = "customer-view.fxml";
                     title = "Customer Dashboard";
-                    width = 750; // Increased width for better fit
-                    height = 850; // Increased height for date pickers
+                    width = 700;
+                    height = 720;
                 }
 
                 FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
@@ -71,11 +87,9 @@ public class LoginController {
                 e.printStackTrace();
             }
         } else {
-
             errorLabel.setText("Invalid username or password.");
         }
     }
-
 
 
     @FXML
