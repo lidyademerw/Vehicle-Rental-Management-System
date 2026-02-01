@@ -4,7 +4,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserDataHandler {
+public class UserDataHandler implements IUserRepository {
     private static final String FILE_NAME = "users.txt";
 
     public void saveUsers(List<User> users) {

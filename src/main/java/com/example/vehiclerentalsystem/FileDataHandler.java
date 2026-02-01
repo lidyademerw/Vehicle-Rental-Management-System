@@ -4,7 +4,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FileDataHandler {
+public class FileDataHandler implements IVehicleRepository {
     private static final String FILE_NAME = "vehicles.txt";
 
     // This method SAVES the vehicles to a text file
