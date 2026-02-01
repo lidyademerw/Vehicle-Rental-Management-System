@@ -1,6 +1,13 @@
 package com.example.vehiclerentalsystem;
+/**
+ * Parent Class: Vehicle
+ * Developed and Documented by: Kalkidan Birhanu
+ * This class demonstrates Encapsulation and Abstraction by defining
+ * the core properties of all rental units.
+ */
 
 public abstract class Vehicle {
+    // Encapsulated data fields to protect object state
     private String plateNumber;
     private String model;
     private double dailyPrice;
@@ -9,7 +16,7 @@ public abstract class Vehicle {
     private String renterContact;
     private String startDate;
     private String endDate;
-
+    // Constructor to initialize a Vehicle object with specific details
     public Vehicle(String plateNumber, String model, double dailyPrice) {
         this.plateNumber = plateNumber;
         this.model = model;
@@ -20,7 +27,7 @@ public abstract class Vehicle {
         this.startDate = "N/A";
         this.endDate = "N/A";
     }
-
+    // Getter method to provide read-only access to the plate number
     public String getPlateNumber() { return plateNumber; }
     public String getModel() { return model; }
     public double getDailyPrice() { return dailyPrice; }
