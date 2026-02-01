@@ -15,7 +15,7 @@ public class LoginController {
     @FXML private Label errorLabel;
     @FXML private TextField contactField;
 
-    private static RentalManager manager = new RentalManager();
+    private static RentalManager manager = new RentalManager(new FileDataHandler(), new UserDataHandler());
 
     public static RentalManager getManager() {
         return manager;
