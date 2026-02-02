@@ -11,6 +11,7 @@ import javafx.stage.Stage;
 
 //Handles user login and signup actions
 public class LoginController {
+    // Input fields and labels from the login screen
     @FXML private TextField usernameField;
     @FXML private PasswordField passwordField;
     @FXML private Label errorLabel;
