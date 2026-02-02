@@ -20,6 +20,7 @@ public class LoginController {
     // Manages users and rentals for the application
     private static RentalManager manager = new RentalManager(new FileDataHandler(), new UserDataHandler());
 
+    // Returns the shared RentalManager instance
     public static RentalManager getManager() {
         return manager;
     }
