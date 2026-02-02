@@ -3,6 +3,7 @@ package com.example.vehiclerentalsystem;
 import java.util.ArrayList;
 import java.util.List;
 
+// Handles business logic for vehicle rentals
 public class RentalManager {
     private List<Vehicle> vehicles;
     private List<User> users;
