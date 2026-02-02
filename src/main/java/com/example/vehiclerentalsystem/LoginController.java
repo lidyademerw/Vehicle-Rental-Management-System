@@ -26,6 +26,7 @@ public class LoginController {
     }
     @FXML
     protected void onLoginButtonClick() {
+        // Get values entered by the user
         String user = usernameField.getText();
         String pass = passwordField.getText();
         String contact = contactField.getText();
