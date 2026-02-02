@@ -9,6 +9,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+//Handles user login and signup actions
 public class LoginController {
     @FXML private TextField usernameField;
     @FXML private PasswordField passwordField;
