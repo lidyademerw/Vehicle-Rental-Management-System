@@ -113,6 +113,7 @@ public class LoginController {
             return;
         }
 
+        // Register new user
         boolean success = manager.registerUser(user, pass, contactText);
         if (success) {
             showInfoMessage("Account Created", "Registration successful! You can now Sign In.");
