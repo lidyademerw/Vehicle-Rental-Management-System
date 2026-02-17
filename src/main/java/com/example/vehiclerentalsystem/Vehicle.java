@@ -1,10 +1,5 @@
 package com.example.vehiclerentalsystem;
-/**
- * Parent Class: Vehicle
- * Developed and Documented by: Kalkidan Birhanu
- * This class demonstrates Encapsulation and Abstraction by defining
- * the core properties of all rental units.
- */
+
 
 public abstract class Vehicle {
     // Encapsulated data fields to protect object state

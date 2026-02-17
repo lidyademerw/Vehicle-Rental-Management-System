@@ -1,0 +1,45 @@
+/* The main background */
+.root {
+    -fx-background-color: #f8f9fa;
+}
+
+/* The white card */
+.login-card {
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);
+}
+
+/* Modern Input Fields (Underline style) */
+.text-field, .password-field {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent transparent #ddd transparent;
+    -fx-border-width: 0 0 1 0;
+    -fx-prompt-text-fill: #aaa;
+    -fx-text-fill: #333;
+}
+
+.text-field:focused, .password-field:focused {
+    -fx-border-color: transparent transparent #2ecc71 transparent;
+}
+
+/* The Bright Green Button */
+.login-button {
+    -fx-background-color: #2ecc71;
+    -fx-text-fill: white;
+    -fx-background-radius: 5;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-cursor: hand;
+}
+
+.login-button:hover {
+    -fx-background-color: #27ae60;
+}
+
+/* Link texts */
+.link-text {
+    -fx-text-fill: #2ecc71;
+    -fx-font-size: 11px;
+    -fx-underline: true;
+}
